@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"errors"
+	"archiver/lib/vlc"
 	"fmt"
 	"io"
 	"os"
@@ -11,17 +11,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var vlcCmd = &cobra.Command{
+var vlcUnpackCmd = &cobra.Command{
 	Use:   "vlc",
 	Short: "Pack file using varible-length code",
-	Run:   pack,
+	Run:   unpack,
 }
 
-const packedExtention = "vlc"
+const unpackedExtention = "txt"
 
-var ErrEmptyPath = errors.New("path to files is nit specified")
-
-func pack(_ *cobra.Command, args []string) {
+func unpack(_ *cobra.Command, args []string) {
 	if len(args) == 0 || args[0] == "" {
 		handleErr(ErrEmptyPath)
 	}
@@ -31,28 +29,29 @@ func pack(_ *cobra.Command, args []string) {
 	if err != nil {
 		handleErr(err)
 	}
+	defer r.Close()
 
 	data, err := io.ReadAll(r)
 	if err != nil {
 		handleErr(err)
 	}
 
-	packed := ""
+	packed := vlc.Decode(string(data))
 	fmt.Println(string(data))
 
-	err = os.WriteFile(packedFileName(filePath), []byte(packed), 0644)
+	err = os.WriteFile(unpackedFileName(filePath), []byte(packed), 0644)
 	if err != nil {
 		handleErr(err)
 	}
 
 }
 
-func packedFileName(path string) string {
+func unpackedFileName(path string, ext string) string {
 	fileName := filepath.Base(path)
 
 	return strings.TrimSuffix(fileName, filepath.Ext(fileName)) + "." + packedExtention
 }
 
 func init() {
-	packCmd.AddCommand(vlcCmd)
+	unpackCmd.AddCommand(vlcUnpackCmd)
 }
