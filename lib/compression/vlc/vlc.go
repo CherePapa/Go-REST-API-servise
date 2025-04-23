@@ -5,7 +5,13 @@ import (
 	"unicode"
 )
 
-func Encode(str string) []byte {
+type EncoderDecoder struct{}
+
+func New() EncoderDecoder {
+	return EncoderDecoder{}
+}
+
+func (_ EncoderDecoder) Encode(str string) []byte {
 	str = prepateText(str)
 
 	chunck := spliteByChuncks(encodeBin(str), chunksSize)
@@ -13,16 +19,13 @@ func Encode(str string) []byte {
 	return chunck.Bytes()
 }
 
-func Decode(encodedData []byte) string {
+func (_ EncoderDecoder) Decode(encodedData []byte) string {
 	bString := NewBinChunks(encodedData).Join()
 
 	dTree := getEncodingTable().DecodingTree()
 
 	return exportText(dTree.Decode(bString))
 }
-
-// spliteByChancks разбивает текст на чанки
-// 10001,10010101
 
 // Метод prepareText преобразует текст в нижний регистр
 // изменяет текст: ! + нижний регистр
