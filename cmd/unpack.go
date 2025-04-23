@@ -3,6 +3,7 @@ package cmd
 import (
 	"archiver/lib/compression"
 	"archiver/lib/compression/vlc"
+	"archiver/lib/compression/vlc/table/shannon_fano"
 	"io"
 	"os"
 	"path/filepath"
@@ -25,7 +26,7 @@ func unpack(cmd *cobra.Command, args []string) {
 
 	switch method {
 	case "vlc":
-		decoder = vlc.New()
+		decoder = vlc.New(shannon_fano.Generator{})
 	default:
 		cmd.PrintErr("unknown method")
 	}
@@ -54,7 +55,7 @@ func unpack(cmd *cobra.Command, args []string) {
 func unpackedFileName(path string) string {
 	fileName := filepath.Base(path)
 
-	return strings.TrimSuffix(fileName, filepath.Ext(fileName)) + "." + packedExtention
+	return strings.TrimSuffix(fileName, filepath.Ext(fileName)) + "." + unpackedExtention
 }
 
 var unpackCmd = &cobra.Command{
