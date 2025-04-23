@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"archiver/lib/vlc"
-	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -36,8 +35,7 @@ func unpack(_ *cobra.Command, args []string) {
 		handleErr(err)
 	}
 
-	packed := vlc.Decode(string(data))
-	fmt.Println(string(data))
+	packed := vlc.Decode(data)
 
 	err = os.WriteFile(unpackedFileName(filePath), []byte(packed), 0644)
 	if err != nil {
@@ -46,7 +44,7 @@ func unpack(_ *cobra.Command, args []string) {
 
 }
 
-func unpackedFileName(path string, ext string) string {
+func unpackedFileName(path string) string {
 	fileName := filepath.Base(path)
 
 	return strings.TrimSuffix(fileName, filepath.Ext(fileName)) + "." + packedExtention

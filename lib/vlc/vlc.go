@@ -5,16 +5,16 @@ import (
 	"unicode"
 )
 
-func Encode(str string) string {
+func Encode(str string) []byte {
 	str = prepateText(str)
 
 	chunck := spliteByChuncks(encodeBin(str), chunksSize)
 
-	return chunck.ToHex().ToString()
+	return chunck.Bytes()
 }
 
-func Decode(encodedText string) string {
-	bString := NewHexChunks(encodedText).ToBinary().Join()
+func Decode(encodedData []byte) string {
+	bString := NewBinChunks(encodedData).Join()
 
 	dTree := getEncodingTable().DecodingTree()
 
