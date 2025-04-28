@@ -4,8 +4,9 @@ import (
 	"log"
 	"os"
 	"web-service/database"
+	"web-service/routes"
 
-	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 )
 
@@ -17,5 +18,6 @@ func main() {
 
 	port := os.Getenv("PORT")
 	app := fiber.New()
+	routes.Setup(app)
 	app.Listen(":" + port)
 }
