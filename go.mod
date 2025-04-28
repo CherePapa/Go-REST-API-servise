@@ -1,3 +1,3 @@
-module telegram-bot
+module web-service
 
 go 1.24.2
