@@ -3,3 +3,5 @@ download nodemon for autorestart app if you save yr code
 
 
 Use fiber, gorm, cryptb
+
+Пока что не закончен, https://www.youtube.com/live/kzraMfze2vQ

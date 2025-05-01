@@ -23,3 +23,7 @@ func CreatePost(c *fiber.Ctx) error {
 		"message": "Congration!, Yr post is live",
 	})
 }
+
+func AllPost(c *fiber.Ctx) {
+
+}
